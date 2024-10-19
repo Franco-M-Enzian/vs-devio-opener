@@ -18,15 +18,10 @@
       {
         "command": "vs-devio-opener.helloWorld",
         "title": "Hello World"
-      }
-    ]
-  },
-  "menus": {
-    "editor/context": [
+      },
       {
-        "when": "editorFocus",
-        "command": "vscode-context.openDevio",
-        "group": "myGroup@1"
+        "command": "vs-devio-opener.newCommand",
+        "title": "New Command"
       }
     ]
   },

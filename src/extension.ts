@@ -9,5 +9,15 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  let newDisposable = vscode.commands.registerCommand(
+    'vs-devio-opener.newCommand',
+    () => {
+      vscode.window.showInformationMessage('Hello World new Function!');
+    }
+  );
+
+
   context.subscriptions.push(disposable);
+  context.subscriptions.push(newDisposable);
+
 }
