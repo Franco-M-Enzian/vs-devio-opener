@@ -23,8 +23,22 @@
         "command": "vs-devio-opener.newCommand",
         "title": "New Command"
       }
+    ],
+  "menus": {
+    "editor/context": [
+      {
+        "when": "editorFocus",
+        "command": "vs-devio-opener.helloWorld",
+        "group": "myGroup@1"
+      },
+      {
+        "when": "editorFocus",
+        "command": "vs-devio-opener.newCommand",
+        "group": "myGroup@2"
+      }
     ]
-  },
+  }
+},
   "scripts": {
     "vscode:prepublish": "npm run package",
     "compile": "webpack",
