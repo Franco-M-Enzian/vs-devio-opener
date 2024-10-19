@@ -1,3 +1,3 @@
 # vs-devio-opener README
 
-指定したDevelopersIOのページを開ける拡張機能です。
+拡張機能のインストールして使える状態にしました。
