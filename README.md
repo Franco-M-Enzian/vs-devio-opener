@@ -1,3 +1,3 @@
-# vs-devio-opener README
+# Working Tracker
 
-拡張機能のインストールして使える状態にしました。
+VSCodeでの作業時間を記録できます。
