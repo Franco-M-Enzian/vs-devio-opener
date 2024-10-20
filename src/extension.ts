@@ -4,10 +4,10 @@ let startTime: Date;
 
 export function activate(context: vscode.ExtensionContext) {
     startTime = new Date();
-
-    vscode.window.showInformationMessage('作業時間の記録を開始しました。');
     const formattedTime = formatDate(startTime);
+
     vscode.window.showInformationMessage('現在時刻：' + formattedTime);
+    vscode.window.showInformationMessage('作業時間の記録を開始しました。');
 }
 
 function formatDate(date: Date): string {
