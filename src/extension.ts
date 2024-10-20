@@ -3,7 +3,6 @@ import * as vscode from 'vscode';
 let startTime: Date;
 
 export function activate(context: vscode.ExtensionContext) {
-  "worktime-tracker.start";
     startTime = new Date();
 
     vscode.window.showInformationMessage('作業時間の記録を開始しました。');
