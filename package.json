@@ -1,7 +1,7 @@
 {
-  "name": "vs-devio-opener",
-  "displayName": "vs-devio-opener",
-  "description": "",
+  "name": "worktime-tracker",
+  "displayName": "WorkTime Tracker",
+  "description": "VSCodeでの作業時間を記録する拡張機能です。",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.94.0"
@@ -10,34 +10,16 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vscode-context.openDevio"
+    "*"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "vs-devio-opener.helloWorld",
-        "title": "Hello World"
-      },
-      {
-        "command": "vs-devio-opener.newCommand",
-        "title": "New Command"
-      }
-    ],
-  "menus": {
-    "editor/context": [
-      {
-        "when": "editorFocus",
-        "command": "vs-devio-opener.helloWorld",
-        "group": "myGroup@1"
-      },
-      {
-        "when": "editorFocus",
-        "command": "vs-devio-opener.newCommand",
-        "group": "myGroup@2"
+        "command": "worktime-tracker.start",
+        "title": "Start Worktime Tracking"
       }
     ]
-  }
 },
   "scripts": {
     "vscode:prepublish": "npm run package",
