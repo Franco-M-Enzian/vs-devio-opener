@@ -5,14 +5,14 @@ export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand(
     'vs-devio-opener.helloWorld',
     () => {
-      vscode.window.showInformationMessage('Hello World from vs-devio-opener!');
+      vscode.window.showInformationMessage('Hello World!');
     }
   );
 
   let newDisposable = vscode.commands.registerCommand(
     'vs-devio-opener.newCommand',
     () => {
-      vscode.window.showInformationMessage('Hello World new Function!');
+      vscode.window.showInformationMessage('New Command!');
     }
   );
 
