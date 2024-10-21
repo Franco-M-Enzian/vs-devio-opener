@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
-
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GEMINI_API_KEY } from "./env";
 let startTime: Date;
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
     startTime = new Date();
 
     const formattedTime = formatDate(startTime);
@@ -11,6 +12,13 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerTreeDataProvider('WorkTimeTracker.View', workTimeProvider);
     vscode.window.showInformationMessage('現在時刻：' + formattedTime);
     vscode.window.showInformationMessage('作業時間の記録を開始しました。');
+
+    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const prompt = "何か、ひらがな一文字を出力してください。一文字だけでいいです。";
+    const result = await model.generateContent(prompt);
+    const resultText = result.response.text();
+    console.log(resultText);
 }
 
 export function deactivate() {
