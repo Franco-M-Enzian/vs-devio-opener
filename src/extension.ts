@@ -1,32 +1,41 @@
 import * as vscode from 'vscode';
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { GEMINI_API_KEY } from "./env";
-let startTime: Date;
+// import { GoogleGenerativeAI } from "@google/generative-ai";
+// import { GEMINI_API_KEY } from "./env";
 
-export async function activate(context: vscode.ExtensionContext) {
-    startTime = new Date();
+let startTime: Date | undefined;
+let endTime: Date | undefined;
 
-    const formattedTime = formatDate(startTime);
-    
-    const workTimeProvider = new WorkTimeProvider(formattedTime);
-    vscode.window.registerTreeDataProvider('WorkTimeTracker.View', workTimeProvider);
-    vscode.window.showInformationMessage('現在時刻：' + formattedTime);
-    vscode.window.showInformationMessage('作業時間の記録を開始しました。');
+export function activate(context: vscode.ExtensionContext) {
+    // 「作業開始」コマンドの登録
+    let startCommand = vscode.commands.registerCommand('worktime-tracker.start', () => {
+        startTime = new Date();
+        const formattedStartTime = formatDate(startTime);
+        vscode.window.showInformationMessage('作業を開始しました！ 開始時刻: ' + formattedStartTime);
+    });
 
-    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    const prompt = "何か、ひらがな一文字を出力してください。一文字だけでいいです。";
-    const result = await model.generateContent(prompt);
-    const resultText = result.response.text();
-    console.log(resultText);
+    // 「作業終了」コマンドの登録
+    let stopCommand = vscode.commands.registerCommand('worktime-tracker.stop', () => {
+        if (!startTime) {
+            vscode.window.showInformationMessage('作業を開始していません。');
+            return;
+        }
+        endTime = new Date();
+        const formattedEndTime = formatDate(endTime);
+        const workDuration = calculateDuration(startTime, endTime);
+        vscode.window.showInformationMessage(`作業を終了しました！ 終了時刻: ${formattedEndTime} 作業時間: ${workDuration}`);
+    });
+
+    // コマンドをcontextに登録
+    context.subscriptions.push(startCommand);
+    context.subscriptions.push(stopCommand);
 }
 
-export function deactivate() {
-}
+export function deactivate() {}
 
+// 日付をフォーマットする関数
 function formatDate(date: Date): string {
     const year = date.getFullYear();
-    const month = date.getMonth() + 1;
+    const month = date.getMonth() + 1; // 月は0から始まるので+1
     const day = date.getDate();
     const hours = date.getHours();
     const minutes = date.getMinutes();
@@ -34,30 +43,12 @@ function formatDate(date: Date): string {
     return `${year}年${month}月${day}日 ${hours}時${minutes}分${seconds}秒`;
 }
 
-class WorkTimeProvider implements vscode.TreeDataProvider<WorkTimeItem> {
-    private _onDidChangeTreeData: vscode.EventEmitter<WorkTimeItem | undefined> = new vscode.EventEmitter<WorkTimeItem | undefined>();
-    readonly onDidChangeTreeData: vscode.Event<WorkTimeItem | undefined> = this._onDidChangeTreeData.event;
-
-    private workTime: string;
-
-    constructor(workTime: string) {
-        this.workTime = workTime;
-    }
-
-    getTreeItem(element: WorkTimeItem): vscode.TreeItem {
-        return element;
-    }
-
-    getChildren(element?: WorkTimeItem): Thenable<WorkTimeItem[]> {
-        return Promise.resolve([new WorkTimeItem(this.workTime)]);
-    }
+// 作業時間を計算する関数
+function calculateDuration(start: Date, end: Date): string {
+    const diffMs = end.getTime() - start.getTime(); // ミリ秒差
+    const diffSec = Math.floor(diffMs / 1000); // 秒に変換
+    const hours = Math.floor(diffSec / 3600);
+    const minutes = Math.floor((diffSec % 3600) / 60);
+    const seconds = diffSec % 60;
+    return `${hours}時間${minutes}分${seconds}秒`;
 }
-
-class WorkTimeItem extends vscode.TreeItem {
-    constructor(public readonly label: string) {
-        super(label);
-        this.tooltip = `${this.label}`;
-        this.description = '';
-    }
-}
-

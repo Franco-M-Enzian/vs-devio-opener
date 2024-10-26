@@ -12,6 +12,16 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "commands": [
+      {
+        "command": "worktime-tracker.start",
+        "title": "作業開始"
+      },
+      {
+        "command": "worktime-tracker.stop",
+        "title": "作業終了"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
